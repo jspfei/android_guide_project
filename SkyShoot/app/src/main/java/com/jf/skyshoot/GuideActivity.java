@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.jf.skyshoot.adapter.ViewPagerAdapter;
+import com.jf.skyshoot.hanlder.ScreenManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,8 @@ public class GuideActivity extends Activity implements View.OnClickListener ,Vie
     public void onCreate(Bundle bundle){
         super.onCreate(bundle);
         setContentView(R.layout.activity_guide);
+
+        ScreenManager.getScreenManager().pushActivity(this);
 
         start_btn = (Button) findViewById(R.id.start_btn);
         start_btn.setVisibility(View.GONE);
