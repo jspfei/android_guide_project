@@ -3,15 +3,20 @@ package com.jf.skyshoot;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.jf.skyshoot.adapter.MyGridViewAdapter;
 import com.jf.skyshoot.bean.ADInfo;
+import com.jf.skyshoot.bean.Picture;
 import com.jf.skyshoot.hanlder.ScreenManager;
 import com.jf.skyshoot.lib.CycleViewPager;
 import com.jf.skyshoot.utils.ViewFactory;
@@ -30,18 +35,22 @@ public class MainActivity extends Activity {
     private List<ImageView> views = new ArrayList<ImageView>();
     private List<ADInfo> infos = new ArrayList<ADInfo>();
     private CycleViewPager cycleViewPager;
+    private GridView class_gv;
 
     private String[] imageUrls = {"http://img.taodiantong.cn/v55183/infoimg/2013-07/130720115322ky.jpg",
             "http://pic30.nipic.com/20130626/8174275_085522448172_2.jpg",
             "http://pic18.nipic.com/20111215/577405_080531548148_2.jpg",
             "http://pic15.nipic.com/20110722/2912365_092519919000_2.jpg",
             "http://pic.58pic.com/58pic/12/64/27/55U58PICrdX.jpg"};
+    private int[] images = {R.drawable.h1,R.drawable.h2,R.drawable.h3,R.drawable.h4,
+                            R.drawable.h5,R.drawable.h6,R.drawable.h7,R.drawable.h8};
+    private Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ScreenManager.getScreenManager().pushActivity(this);
-
+        context = this;
         exit_screen_btn = (Button) findViewById(R.id.exit_screen_btn);
         exit_screen_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,8 +60,30 @@ public class MainActivity extends Activity {
         });
 
         initialize();
-
+        initGridView();
     }
+
+    private void initGridView() {
+        class_gv = (GridView) findViewById(R.id.class_gv);
+        MyGridViewAdapter myGridViewAdapter = new MyGridViewAdapter(getPictureList(),context);
+        class_gv.setAdapter(myGridViewAdapter);
+        class_gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(context,"pic  "+position,Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private List<Picture> getPictureList(){
+        List<Picture> list = new ArrayList<Picture>();
+        for(int i=0;i<images.length;i++){
+            Picture picture = new Picture();
+            picture.setImageId(images[i]);
+            list.add(picture);
+        }
+        return list;
+    }
+
     @SuppressLint("NewApi")
     private void initialize() {
 
