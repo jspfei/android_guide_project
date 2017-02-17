@@ -5,6 +5,9 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.main.PayAgent;
+import com.touchtech.player.Constant;
+
 /**
  *检查网路连接
  * Created by admin on 2017/2/7.
@@ -33,4 +36,14 @@ public class NetUtils {
         }
         return false;
     }
+    public static void reAgainStartPayAgent(Activity activity, Context context){
+        if(!Constant.payAgentFirst){
+            Boolean isNetConnection = NetUtils.isNetworkAvailable(context);
+            if(isNetConnection){
+                PayAgent.initWithKeys(activity, null, "m0001", "m00010001", false);
+                Constant.payAgentFirst=true;
+            }
+        }
+    }
+
 }
